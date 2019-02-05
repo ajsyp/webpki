@@ -245,7 +245,7 @@ impl <'a> EndEntityCert<'a> {
     pub fn verify_signature(&self, signature_alg: &SignatureAlgorithm,
                             msg: untrusted::Input,
                             signature: untrusted::Input) -> Result<(), Error> {
-        signed_data::verify_signature(signature_alg, self.inner.spki, msg,
+        signed_data::verify_signature(signature_alg, self.inner.spki.value(), msg,
                                       signature)
     }
 }

@@ -86,7 +86,7 @@ pub fn build_chain<'a>(required_eku_if_present: KeyPurposeId,
         // Prevent loops; see RFC 4158 section 5.2.
         let mut prev = cert;
         loop {
-            if potential_issuer.spki == prev.spki &&
+            if potential_issuer.spki.value() == prev.spki.value() &&
                potential_issuer.subject == prev.subject {
                 return Err(Error::UnknownIssuer);
             }
@@ -124,7 +124,7 @@ fn check_signatures(supported_sig_algs: &[&SignatureAlgorithm],
 
         match &cert.ee_or_ca {
             &EndEntityOrCA::CA(child_cert) => {
-                spki_value = cert.spki;
+                spki_value = cert.spki.value();
                 cert = child_cert;
             },
             &EndEntityOrCA::EndEntity => { break; }
